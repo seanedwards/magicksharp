@@ -37,9 +37,23 @@ namespace MagickSharp.Test
 			}
 		}
 
+		bool NoException(MagickSharp.ImageMagick.MagickWand wand)
+		{
+			return MagickSharp.ImageMagick.MagickGetExceptionType(wand) ==
+				MagickSharp.ImageMagick.ExceptionType.UndefinedException;
+		}
+
+		void AssertNoErrors(MagickSharp.ImageMagick.MagickWand wand)
+		{
+			MagickSharp.ImageMagick.ExceptionType type;
+			Assert.IsTrue(this.NoException(wand),
+				MagickSharp.ImageMagick.MagickGetException(wand, out type));
+		}
+
 		[TestInitialize]
 		public void Genesis()
 		{
+			System.IO.Directory.CreateDirectory("TestResults");
 			MagickSharp.ImageMagick.MagickWandGenesis();
 		}
 
@@ -75,9 +89,46 @@ namespace MagickSharp.Test
 		public void CreateDestroyWand()
 		{
 			MagickSharp.ImageMagick.MagickWand wand = MagickSharp.ImageMagick.NewMagickWand();
+			this.AssertNoErrors(wand);
 			Assert.IsTrue(MagickSharp.ImageMagick.IsMagickWand(wand));
 			wand = MagickSharp.ImageMagick.DestroyMagickWand(wand);
 			Assert.IsFalse(MagickSharp.ImageMagick.IsMagickWand(wand));
+		}
+
+		[TestMethod]
+		public void MagickReadWriteImage()
+		{
+			MagickSharp.ImageMagick.MagickWand wand = MagickSharp.ImageMagick.NewMagickWand();
+			this.AssertNoErrors(wand);
+
+			MagickSharp.ImageMagick.MagickReadImage(wand, "..\\..\\..\\MagickSharp.Test.Data\\wizard.png");
+			this.AssertNoErrors(wand);
+
+			MagickSharp.ImageMagick.MagickWriteImage(wand, "TestResults\\MagickReadWriteImage.wizard.png");
+			this.AssertNoErrors(wand);
+
+			wand = MagickSharp.ImageMagick.DestroyMagickWand(wand);
+		}
+
+		[TestMethod]
+		public void MagickRotateImage()
+		{
+			MagickSharp.ImageMagick.MagickWand wand = MagickSharp.ImageMagick.NewMagickWand();
+			this.AssertNoErrors(wand);
+
+			MagickSharp.ImageMagick.MagickReadImage(wand, "..\\..\\..\\MagickSharp.Test.Data\\wizard.png");
+			this.AssertNoErrors(wand);
+
+			MagickSharp.ImageMagick.PixelWand pxwand = MagickSharp.ImageMagick.NewPixelWand();
+			MagickSharp.ImageMagick.PixelSetRGB(pxwand, 0, 0, 0);
+
+			MagickSharp.ImageMagick.MagickRotateImage(wand, pxwand, 45);
+			this.AssertNoErrors(wand);
+
+			MagickSharp.ImageMagick.MagickWriteImage(wand, "TestResults\\MagickReadWriteImage.wizard.png");
+			this.AssertNoErrors(wand);
+
+			wand = MagickSharp.ImageMagick.DestroyMagickWand(wand);
 		}
 	}
 }

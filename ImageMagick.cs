@@ -20,6 +20,10 @@ namespace MagickSharp
 		/// </summary>
 		public const string DLL_CORE = "CORE_RL_wand_.dll";
 
+
+		/*******************************************************************
+		 ********************* Magick Wand Methods *************************
+		 ******************************************************************/
 		/// <summary>
 		/// MagickWandGenesis() initializes the MagickWand environment.
 		/// </summary>
@@ -49,7 +53,7 @@ namespace MagickSharp
 		public static MagickWand DestroyMagickWand(MagickWand wand) { wand.Dispose(); return wand; }
 
 		[DllImport(DLL_CORE, EntryPoint = "DestroyMagickWand")]
-		private static unsafe extern IntPtr DestroyMagickWandImpl(IntPtr wand);
+		private static extern IntPtr DestroyMagickWandImpl(IntPtr wand);
 
 
 		/// <summary>
@@ -108,12 +112,135 @@ namespace MagickSharp
 		[DllImport(DLL_CORE)]
 		public static extern string MagickQueryConfigureOption(string option);
 
+
+
+		/*******************************************************************
+		 ********************** Pixel Wand Methods ************************
+		 ******************************************************************/
+		
+		/// <summary>
+		/// NewPixelWand() returns a new pixel wand.
+		/// </summary>
+		/// <returns></returns>
+		public static PixelWand NewPixelWand() { return new PixelWand(NewPixelWandImpl()); }
+
+		[DllImport(DLL_CORE, EntryPoint = "NewPixelWand")]
+		private static extern IntPtr NewPixelWandImpl();
+
+		/// <summary>
+		/// DestroyPixelWand() deallocates resources associated with a PixelWand.
+		/// </summary>
+		/// <param name="wand"></param>
+		/// <returns></returns>
+		public static PixelWand DestroyPixelWand(PixelWand wand) { wand.Dispose(); return wand; }
+
+		[DllImport(DLL_CORE, EntryPoint = "DestroyPixelWand")]
+		private static extern IntPtr DestroyPixelWandImpl(IntPtr wand);
+
+		/// <summary>
+		/// PixelSetRed() sets the normalized red color of the pixel wand.
+		/// </summary>
+		/// <param name="wand"></param>
+		/// <param name="c"></param>
+		[DllImport(DLL_CORE)]
+		public static extern void PixelSetRed(PixelWand wand, double c);
+
+		/// <summary>
+		/// PixelSetGreen() sets the normalized red color of the pixel wand.
+		/// </summary>
+		/// <param name="wand"></param>
+		/// <param name="c"></param>
+		[DllImport(DLL_CORE)]
+		public static extern void PixelSetGreen(PixelWand wand, double c);
+
+		/// <summary>
+		/// PixelSetBlue() sets the normalized red color of the pixel wand.
+		/// </summary>
+		/// <param name="wand"></param>
+		/// <param name="c"></param>
+		[DllImport(DLL_CORE)]
+		public static extern void PixelSetBlue(PixelWand wand, double c);
+
+		/// <summary>
+		/// PixelSetRGB() sets the red, green and blue colors of the pixel wand simultaneously.
+		/// </summary>
+		/// <param name="wand"></param>
+		/// <param name="r"></param>
+		/// <param name="g"></param>
+		/// <param name="b"></param>
+		public static void PixelSetRGB(PixelWand wand, double r, double g, double b)
+		{
+			PixelSetRed(wand, r); PixelSetGreen(wand, g); PixelSetBlue(wand, b);
+		}
+
+		/// <summary>
+		/// PixelSetOpacity() sets the normalized opacity color of the pixel wand.
+		/// </summary>
+		/// <param name="wand"></param>
+		/// <param name="opacity"></param>
+		[DllImport(DLL_CORE)]
+		public static extern void PixelSetOpacity(PixelWand wand, double opacity);
+
+
+
+		/*******************************************************************
+		 ****************** Magick Wand Image Methods **********************
+		 ******************************************************************/
+
+		/// <summary>
+		/// MagickNewImage() adds a blank image canvas of the specified size and background color to the wand.
+		/// </summary>
+		/// <param name="wand">The magick wand</param>
+		/// <param name="columns">The image width</param>
+		/// <param name="rows">The image height</param>
+		/// <param name="background">The image color</param>
+		/// <returns></returns>
+		[DllImport(DLL_CORE)]
+		public static extern MagickBooleanType MagickNewImage(MagickWand wand, size_t columns, size_t rows, PixelWand background);
+
+		/// <summary>
+		/// MagickReadImage() reads an image or image sequence. 
+		/// The images are inserted at the current image pointer position. 
+		/// Use MagickSetFirstIterator(), MagickSetLastIterator, or MagickSetImageIndex() 
+		/// to specify the current image pointer position at the beginning of the image list, 
+		/// the end, or anywhere in-between respectively.
+		/// </summary>
+		/// <param name="wand">the magick wand.</param>
+		/// <param name="filename">the image filename.</param>
+		/// <returns></returns>
+		[DllImport(DLL_CORE)]
+		public static extern MagickBooleanType MagickReadImage(MagickWand wand, [MarshalAs(UnmanagedType.LPStr)] string filename);
+
+		/// <summary>
+		/// MagickWriteImage() writes an image to the specified filename. 
+		/// If the filename parameter is NULL, the image is written to the filename 
+		/// set by MagickReadImage() or MagickSetImageFilename().
+		/// </summary>
+		/// <param name="wand">the magick wand.</param>
+		/// <param name="filename">the image filename.</param>
+		/// <returns></returns>
+		[DllImport(DLL_CORE)]
+		public static extern MagickBooleanType MagickWriteImage(MagickWand wand, [MarshalAs(UnmanagedType.LPStr)] string filename);
+
+		/// <summary>
+		/// MagickRotateImage() rotates an image the specified number of degrees. 
+		/// Empty triangles left over from rotating the image are filled with the background color.
+		/// </summary>
+		/// <param name="wand">the magick wand.</param>
+		/// <param name="background">the background pixel wand.</param>
+		/// <param name="degrees">the number of degrees to rotate the image.</param>
+		/// <returns></returns>
+		[DllImport(DLL_CORE)]
+		public static extern MagickBooleanType MagickRotateImage(MagickWand wand, PixelWand background, double degrees);
+
+
+
 		[StructLayout(LayoutKind.Sequential)]
 		public struct MagickWand : IDisposable
 		{
 			private IntPtr wand;
 
-			public MagickWand(IntPtr wand)
+			internal MagickWand(IntPtr wand)
 			{
 				this.wand = wand;
 			}
@@ -121,6 +248,33 @@ namespace MagickSharp
 			public void Dispose()
 			{
 				this.wand = ImageMagick.DestroyMagickWandImpl(this.wand);
+			}
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct PixelWand : IDisposable
+		{
+			private IntPtr wand;
+
+			internal PixelWand(IntPtr wand)
+			{
+				this.wand = wand;
+			}
+
+			public void Dispose()
+			{
+				this.wand = ImageMagick.DestroyPixelWandImpl(this.wand);
+			}
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		public struct Image
+		{
+			private IntPtr img;
+
+			public Image(IntPtr i)
+			{
+				this.img = i;
 			}
 		}
 
@@ -144,6 +298,16 @@ namespace MagickSharp
 			ModuleFatalError = 755, DrawFatalError = 760, ImageFatalError = 765, WandFatalError = 770,
 			RandomFatalError = 775, XServerFatalError = 780, MonitorFatalError = 785, RegistryFatalError = 790,
 			ConfigureFatalError = 795, PolicyFatalError = 799
+		}
+
+		public enum FilterTypes
+		{
+			UndefinedFilter, PointFilter, BoxFilter, TriangleFilter, HermiteFilter,
+			HanningFilter, HammingFilter, BlackmanFilter, GaussianFilter, QuadraticFilter,
+			CubicFilter, CatromFilter, MitchellFilter, JincFilter, SincFilter, SincFastFilter,
+			KaiserFilter, WelshFilter, ParzenFilter, BohmanFilter, BartlettFilter,
+			LagrangeFilter, LanczosFilter, LanczosSharpFilter, Lanczos2Filter, Lanczos2SharpFilter,
+			RobidouxFilter, SentinelFilter 
 		}
 	}
 }
