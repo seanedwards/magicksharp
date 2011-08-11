@@ -1,0 +1,9 @@
+syntax: glob
+*/bin/*
+*/obj/*
+*.suo
+TestResults/*
+bin/*
+obj/*
+*/Debug/*
+*/Release/*

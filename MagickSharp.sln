@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagickSharp", "MagickSharp.csproj", "{A8EB7CF3-CFE6-4088-BA89-C8E82A65562C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBCD38FE-33BB-479B-94F3-72B64517F657}"
+	ProjectSection(SolutionItems) = preProject
+		Local.testsettings = Local.testsettings
+		MagickSharp.vsmdi = MagickSharp.vsmdi
+		TraceAndTestImpact.testsettings = TraceAndTestImpact.testsettings
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MagickSharp.Test", "MagickSharp.Test\MagickSharp.Test.csproj", "{41B03DA3-EC34-4AFE-B59E-483031CA11BC}"
+EndProject
+Global
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = MagickSharp.vsmdi
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A8EB7CF3-CFE6-4088-BA89-C8E82A65562C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A8EB7CF3-CFE6-4088-BA89-C8E82A65562C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A8EB7CF3-CFE6-4088-BA89-C8E82A65562C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A8EB7CF3-CFE6-4088-BA89-C8E82A65562C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41B03DA3-EC34-4AFE-B59E-483031CA11BC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41B03DA3-EC34-4AFE-B59E-483031CA11BC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41B03DA3-EC34-4AFE-B59E-483031CA11BC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41B03DA3-EC34-4AFE-B59E-483031CA11BC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

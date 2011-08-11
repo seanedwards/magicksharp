@@ -9,7 +9,9 @@ using Quantum = System.UInt16;
 namespace MagickSharp
 {
 	/// <summary>
-	/// 
+	/// This class directly mirrors the MagickWand API. 
+	/// Method signatures and documentation are mostly identical to what 
+	/// can be found on the ImageMagick website.
 	/// </summary>
 	public static class ImageMagick
 	{
@@ -31,6 +33,26 @@ namespace MagickSharp
 		public static extern void MagickWandTerminus();
 
 		/// <summary>
+		/// NewMagickWand() returns a wand required for all other methods in the API. A fatal exception is thrown if there is not enough memory to allocate the wand. Use DestroyMagickWand() to dispose of the wand when it is no longer needed.
+		/// </summary>
+		/// <returns></returns>
+		public static MagickWand NewMagickWand() { return new MagickWand(NewMagickWandImpl()); }
+
+		[DllImport(DLL_CORE, EntryPoint="NewMagickWand")]
+		private static extern IntPtr NewMagickWandImpl();
+
+		/// <summary>
+		/// DestroyMagickWand() deallocates memory associated with a MagickWand.
+		/// </summary>
+		/// <param name="wand"></param>
+		/// <returns></returns>
+		public static MagickWand DestroyMagickWand(MagickWand wand) { wand.Dispose(); return wand; }
+
+		[DllImport(DLL_CORE, EntryPoint = "DestroyMagickWand")]
+		private static unsafe extern IntPtr DestroyMagickWandImpl(IntPtr wand);
+
+
+		/// <summary>
 		/// ClearMagickWand() clears resources associated with the wand.
 		/// </summary>
 		/// <param name="wand"></param>
@@ -44,14 +66,6 @@ namespace MagickSharp
 		/// <returns></returns>
 		[DllImport(DLL_CORE)]
 		public static extern MagickWand CloneMagickWand(MagickWand wand);
-
-		/// <summary>
-		/// DestroyMagickWand() deallocates memory associated with a MagickWand.
-		/// </summary>
-		/// <param name="wand"></param>
-		/// <returns></returns>
-		[DllImport(DLL_CORE)]
-		public static extern MagickWand DestroyMagickWand(MagickWand wand);
 
 		/// <summary>
 		/// IsMagickWand() returns MagickTrue if the wand is verified as a magick wand.
@@ -95,24 +109,19 @@ namespace MagickSharp
 		public static extern string MagickQueryConfigureOption(string option);
 
 		[StructLayout(LayoutKind.Sequential)]
-		public struct MagickWand
+		public struct MagickWand : IDisposable
 		{
-			size_t id;
+			private IntPtr wand;
 
-			[MarshalAs(UnmanagedType.LPStr)]
-			string name;
+			public MagickWand(IntPtr wand)
+			{
+				this.wand = wand;
+			}
 
-			IntPtr exception;
-
-			IntPtr image_info;
-
-			IntPtr quantize_info;
-
-			IntPtr images;
-
-			MagickBooleanType active, pend, debug;
-
-			size_t signature;
+			public void Dispose()
+			{
+				this.wand = ImageMagick.DestroyMagickWandImpl(this.wand);
+			}
 		}
 
 		public enum ExceptionType
