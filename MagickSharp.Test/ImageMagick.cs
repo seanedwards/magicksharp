@@ -125,7 +125,7 @@ namespace MagickSharp.Test
 			MagickSharp.ImageMagick.MagickRotateImage(wand, pxwand, 45);
 			this.AssertNoErrors(wand);
 
-			MagickSharp.ImageMagick.MagickWriteImage(wand, "TestResults\\MagickReadWriteImage.wizard.png");
+			MagickSharp.ImageMagick.MagickWriteImage(wand, "TestResults\\MagickRotateImage.wizard.png");
 			this.AssertNoErrors(wand);
 
 			wand = MagickSharp.ImageMagick.DestroyMagickWand(wand);

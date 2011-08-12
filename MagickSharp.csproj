@@ -40,6 +40,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ImageMagick.cs" />
+    <Compile Include="MagickWand.cs" />
+    <Compile Include="MagickWandImage.cs" />
+    <Compile Include="PixelWand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
