@@ -95,5 +95,10 @@ namespace MagickSharp
 			LagrangeFilter, LanczosFilter, LanczosSharpFilter, Lanczos2Filter, Lanczos2SharpFilter,
 			RobidouxFilter, SentinelFilter 
 		}
+
+		public enum StorageType
+		{
+			UndefinedPixel, CharPixel, DoublePixel, FloatPixel, IntegerPixel, LongPixel, QuantumPixel, ShortPixel 
+		}
 	}
 }
